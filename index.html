@@ -4,86 +4,119 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz PJOK Kelas 10</title>
+
+<!-- Font modern -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
+    *{
+        box-sizing:border-box;
+    }
+
     body{
-        font-family: "Segoe UI", sans-serif;
-        background:#e9edf5;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #5d87ff, #8aa8ff);
         margin:0;
-        padding:20px;
+        padding:25px;
+        color:#333;
     }
 
     .quiz-box{
         background:white;
-        padding:25px;
-        border-radius:12px;
-        max-width:850px;
+        padding:30px;
+        border-radius:18px;
+        max-width:900px;
         margin:auto;
-        box-shadow:0 4px 15px rgba(0,0,0,0.15);
+        box-shadow:0 8px 25px rgba(0,0,0,0.25);
+        animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn{
+        from{opacity:0; transform:translateY(10px);}
+        to{opacity:1; transform:translateY(0);}
     }
 
     h2{
         text-align:center;
         color:#2c3e50;
-        margin-bottom:20px;
+        margin-bottom:25px;
+        font-weight:600;
     }
 
     .soal{
-        background:#f7f9fc;
-        padding:15px;
-        border-radius:10px;
+        background:#f3f6ff;
+        padding:18px;
+        border-radius:14px;
         margin-bottom:20px;
-        border-left:5px solid #5d87ff;
+        border-left:6px solid #5d87ff;
         transition:0.3s;
     }
 
     .soal:hover{
-        background:#eef2fb;
+        background:#e8edff;
+        transform:scale(1.02);
     }
 
     /* indikator benar */
     .correct{
-        background:#e7fbe9 !important;
-        border-left:5px solid #28a745 !important;
+        background:#e5ffe8 !important;
+        border-left:6px solid #28a745 !important;
     }
 
     /* indikator salah */
     .wrong{
-        background:#fde8e8 !important;
-        border-left:5px solid #d62828 !important;
+        background:#ffe5e5 !important;
+        border-left:6px solid #d62828 !important;
     }
 
     button{
-        padding:12px 25px;
-        background:#5d87ff;
+        padding:14px 35px;
+        background:#2c3e50;
         color:white;
         border:none;
-        border-radius:8px;
+        border-radius:10px;
         cursor:pointer;
-        font-size:16px;
+        font-size:18px;
+        font-weight:600;
         display:block;
         margin:auto;
-        margin-top:20px;
+        margin-top:25px;
         transition:0.3s;
     }
 
     button:hover{
-        background:#4b6fe0;
+        background:#1f2d3a;
+        transform:scale(1.05);
     }
 
     #hasil{
-        margin-top:25px;
-        font-size:22px;
+        margin-top:30px;
+        font-size:26px;
         text-align:center;
-        font-weight:bold;
-        color:#2c3e50;
+        font-weight:600;
+        color:#fff;
+        background:#2c3e50;
+        padding:15px;
+        border-radius:12px;
+        max-width:350px;
+        margin-left:auto;
+        margin-right:auto;
+        display:none;
+        animation:pop 0.4s ease;
+    }
+
+    @keyframes pop{
+        0%{transform:scale(0.7); opacity:0;}
+        100%{transform:scale(1); opacity:1;}
     }
 
     .kunci{
         color:#b71c1c;
-        font-size:14px;
+        font-size:1px;
         font-weight:bold;
         margin-top:5px;
     }
+
 </style>
 </head>
 <body>
@@ -93,7 +126,7 @@
 
 <form id="quizForm">
 
-<!-- Soal-soal -->
+<!-- 20 soal -->
 <div class="soal">
 1. Aktivitas yang termasuk olahraga permainan adalah ...
 <br><input type="radio" name="s1" value="b"> Bola voli
@@ -234,7 +267,7 @@
 <br><input type="radio" name="s20" value="c"> Side jump
 </div>
 
-<button type="button" onclick="cekHasil()">Submit</button>
+<button type="button" onclick="cekHasil()">Selesai</button>
 
 </form>
 
@@ -287,8 +320,9 @@ function cekHasil(){
         index++;
     }
 
-    document.getElementById("hasil").innerHTML =
-        "Skor Anda: " + benar + " dari 20";
+    const hasil = document.getElementById("hasil");
+    hasil.style.display = "block";
+    hasil.innerHTML = "Skor Anda: " + benar + " / 20";
 }
 </script>
 
