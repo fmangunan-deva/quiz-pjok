@@ -3,94 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz PJOK – Bab 1‑3 Kelas 10</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+<title>Quiz PJOK Kelas 10</title>
 <style>
-body{
-    font-family:"Poppins",sans-serif;
-    background:linear-gradient(135deg,#5d87ff,#8aa8ff);
-    padding:20px;
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#5d87ff,#8aa8ff);
     margin:0;
     display:flex;
     justify-content:center;
     align-items:center;
-    min-height:100vh;
+    height:100vh;
 }
 
-.quiz-box{
-    width:100%;
-    max-width:800px;
+.quiz-box {
     background:white;
     padding:30px;
-    border-radius:18px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+    border-radius:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width:700px;
 }
 
-h2{
+h2 {
     text-align:center;
     margin-bottom:15px;
-    font-weight:600;
 }
 
-#timer{
+#timer {
     text-align:center;
     font-size:22px;
-    font-weight:600;
-    color:#d62828;
+    font-weight:bold;
     margin-bottom:15px;
+    color:#d62828;
 }
 
-.soal-box{
+.soal-box {
     background:#f3f6ff;
     padding:20px;
-    border-radius:14px;
+    border-radius:10px;
     border-left:6px solid #5d87ff;
-    font-size:18px;
     margin-bottom:20px;
 }
 
-label{
+label {
     display:block;
     margin:8px 0;
-    cursor:pointer;
 }
 
-button{
-    padding:12px 25px;
+button {
+    display:block;
+    width:100%;
+    padding:12px;
+    font-size:18px;
+    background:#2c3e50;
+    color:white;
     border:none;
     border-radius:10px;
     cursor:pointer;
-    font-size:18px;
-    font-weight:600;
-    background:#2c3e50;
-    color:white;
-    transition:.25s;
 }
 
-button:hover{
+button:hover {
     background:#1f2d3a;
-    transform:scale(1.05);
 }
 
-#hasil{
-    margin-top:20px;
-    font-size:26px;
-    font-weight:600;
+#hasil {
+    display:none;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
     background:#2c3e50;
     color:white;
     padding:15px;
-    border-radius:12px;
-    text-align:center;
-    display:none;
+    border-radius:10px;
 }
 </style>
 </head>
 <body>
 
 <div class="quiz-box">
-    <h2>Quiz PJOK – Bab 1‑3 Kelas 10</h2>
+    <h2>Quiz PJOK Kelas 10</h2>
     <div id="timer">Waktu: 15</div>
     <div id="soalContainer"></div>
     <button id="nextBtn" onclick="nextSoal()">Next</button>
@@ -99,29 +90,21 @@ button:hover{
 
 <script>
 // ==========================
-// DATA SOAL (Bab 1–3 PJOK)
-// Format: [ pertanyaan, [opsi1, opsi2, opsi3], indeks_jawaban_benar (0/1/2) ]
+// DATA SOAL BAB 1-3 PJOK KELAS 10
+// Contoh soal, silakan ganti sesuai materi
+// Format: [soal, [pilihan1, pilihan2, pilihan3], indexJawabanBenar]
+// ==========================
 const soalList = [
-    ["Apa arti dari 'kebugaran jasmani'?", ["Kemampuan tubuh untuk melakukan aktivitas sehari‑hari tanpa cepat lelah","Kemampuan tubuh untuk melakukan satu jenis olahraga saja","Kemampuan tubuh tidur dengan nyenyak"], 0],
-    ["Manakah yang termasuk komponen kebugaran jasmani?", ["Kekuatan otot","Mengetik cepat","Mewarnai"], 0],
-    ["Salah satu tujuan pemanasan sebelum olahraga adalah ...", ["Menambah berat badan","Mengurangi risiko cedera","Membuat cepat mengantuk"], 1],
-    ["Manfaat pendinginan setelah olahraga adalah ...", ["Meningkatkan detak jantung drastis","Mengembalikan kondisi tubuh","Membuat otot kaku"], 1],
-    ["Detak jantung maksimal kira‑kira dihitung dengan rumus: 220 dikurangi ...", ["Jumlah anggota keluarga","Usia seseorang","Jam tidur"], 1],
-    ["Contoh olahraga permainan dari bola besar adalah ...", ["Bulu tangkis","Sepak bola","Renang"], 1],
-    ["Pada permainan bola voli, servis dilakukan dari ...", ["Belakang lapangan","Luar lapangan","Area depan lawan"], 0],
-    ["Teknik dasar menggiring bola dalam permainan bola disebut ...", ["Passing","Dribbling","Shooting"], 1],
-    ["Dalam permainan basket, lemparan ke ring dari dekat disebut ...", ["Serve","Lay-up","Smash"], 1],
-    ["Jenis olahraga atletik termasuk ...", ["Senam lantai","Lari","Bulu tangkis"], 1],
-    ["Start jongkok biasa digunakan pada nomor lari ...", ["100 meter","5 km jalan santai","Lompat jauh"], 0],
-    ["Lompat jauh adalah jenis nomor ...", ["Lempar","Lompat","Lari"], 1],
-    ["Renang gaya bebas salah satu tekniknya adalah ...", ["Gaya katak","Gaya gaya bebas (freestyle)","Gaya kupu-kupu"], 1],
-    ["Salah satu unsur latihan kebugaran jasmani adalah latihan ...", ["Mental","Fisikk (kekuatan & daya tahan)","Tari"], 1],
-    ["Gerak manipulatif dalam olahraga contohnya ...", ["Melompat tinggi","Melempar bola","Berlari di tempat"], 1],
-    ["Sebelum olahraga berat sebaiknya dilakukan ...", ["Melewatkan makan","Pemanasan","Tidur siang"], 1],
-    ["Pernafasan yang baik saat olahraga adalah melalui ...", ["Telinga","Hidung & mulut","Mata"], 1],
-    ["Contoh olahraga kekuatan dan daya tahan adalah ...", ["Angkat besi","Menonton film","Bermain video game"], 0],
-    ["Dalam tim sepak bola, tujuan dari passing adalah ...", ["Merapikan rumput","Memindahkan bola ke teman","Mengkalkulasi skor"], 1],
-    ["Sikap tubuh saat menerima bola dalam voli disebut ...", ["Standing pass","Serve","Block"], 0]
+    ["Pengertian olahraga adalah ...", ["Aktivitas fisik teratur","Belajar di kelas","Tidur cukup"], 0],
+    ["Manfaat pemanasan sebelum olahraga adalah ...", ["Mengurangi cedera","Membuat cepat lelah","Tidak ada manfaat"], 0],
+    ["Jenis latihan untuk kekuatan otot adalah ...", ["Push-up","Lari marathon","Senam relaksasi"], 0],
+    ["Teknik dasar dribbling digunakan pada ...", ["Sepak bola","Renang","Bulu tangkis"], 0],
+    ["Dalam senam lantai, roll depan dilakukan dengan ...", ["Mendarat di punggung","Mendarat di perut","Mendarat di tangan"], 1],
+    ["Ciri-ciri latihan fleksibilitas adalah ...", ["Meningkatkan kelenturan otot","Meningkatkan berat badan","Membuat cepat lelah"], 0],
+    ["Olahraga yang menggunakan shuttlecock adalah ...", ["Bulu tangkis","Sepak bola","Basket"], 0],
+    ["Teknik passing bawah digunakan dalam ...", ["Bola voli","Renang","Atletik"], 0],
+    ["Gaya renang yang disebut gaya katak adalah ...", ["Gaya dada","Gaya bebas","Gaya punggung"], 0],
+    ["Start jongkok dilakukan pada lari ...", ["100 meter","1500 meter","Marathon"], 0]
 ];
 
 let nomor = 0;
@@ -131,6 +114,7 @@ let hitung;
 
 // ==========================
 // TAMPILKAN SOAL
+// ==========================
 function tampilSoal(){
     const data = soalList[nomor];
     document.getElementById("soalContainer").innerHTML = `
@@ -143,4 +127,57 @@ function tampilSoal(){
     `;
 }
 
-//
+// ==========================
+// TIMER 15 DETIK
+// ==========================
+function startTimer(){
+    timer = 15;
+    document.getElementById("timer").innerText = "Waktu: " + timer;
+    clearInterval(hitung);
+    hitung = setInterval(() => {
+        timer--;
+        document.getElementById("timer").innerText = "Waktu: " + timer;
+        if(timer <= 0){
+            clearInterval(hitung);
+            nextSoal();
+        }
+    }, 1000);
+}
+
+// ==========================
+// PINDAH SOAL
+// ==========================
+function nextSoal(){
+    const pilih = document.querySelector('input[name="pilihan"]:checked');
+    if(pilih && parseInt(pilih.value) === soalList[nomor][2]){
+        skor++;
+    }
+    nomor++;
+    if(nomor >= soalList.length){
+        selesaiQuiz();
+        return;
+    }
+    tampilSoal();
+    startTimer();
+}
+
+// ==========================
+// SELESAI QUIZ
+// ==========================
+function selesaiQuiz(){
+    clearInterval(hitung);
+    document.getElementById("soalContainer").style.display = "none";
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("timer").style.display = "none";
+    const hasil = document.getElementById("hasil");
+    hasil.style.display = "block";
+    hasil.innerText = `Skor Anda: ${skor} / ${soalList.length}`;
+}
+
+// MULAI QUIZ
+tampilSoal();
+startTimer();
+</script>
+
+</body>
+</html>
