@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz PJOK Timer 15 Detik</title>
+<title>Quiz PJOK – Bab 1‑3 Kelas 10</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -11,8 +11,8 @@
 body{
     font-family:"Poppins",sans-serif;
     background:linear-gradient(135deg,#5d87ff,#8aa8ff);
-    margin:0;
     padding:20px;
+    margin:0;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -20,8 +20,8 @@ body{
 }
 
 .quiz-box{
-    max-width:800px;
     width:100%;
+    max-width:800px;
     background:white;
     padding:30px;
     border-radius:18px;
@@ -30,7 +30,8 @@ body{
 
 h2{
     text-align:center;
-    margin-bottom:10px;
+    margin-bottom:15px;
+    font-weight:600;
 }
 
 #timer{
@@ -53,6 +54,7 @@ h2{
 label{
     display:block;
     margin:8px 0;
+    cursor:pointer;
 }
 
 button{
@@ -88,7 +90,7 @@ button:hover{
 <body>
 
 <div class="quiz-box">
-    <h2>Quiz PJOK Kelas 10</h2>
+    <h2>Quiz PJOK – Bab 1‑3 Kelas 10</h2>
     <div id="timer">Waktu: 15</div>
     <div id="soalContainer"></div>
     <button id="nextBtn" onclick="nextSoal()">Next</button>
@@ -97,29 +99,29 @@ button:hover{
 
 <script>
 // ==========================
-// DATA SOAL
-// ==========================
+// DATA SOAL (Bab 1–3 PJOK)
+// Format: [ pertanyaan, [opsi1, opsi2, opsi3], indeks_jawaban_benar (0/1/2) ]
 const soalList = [
-    ["Aktivitas yang termasuk olahraga permainan adalah ...", ["Bola voli","Senam lantai","Lari jarak pendek"], 0],
-    ["Servis atas terdapat pada permainan ...", ["Sepak bola","Bola voli","Bulu tangkis"], 1],
-    ["Tujuan pemanasan sebelum olahraga adalah ...", ["Mengurangi risiko cedera","Menghemat energi","Membuat tubuh cepat lelah"], 0],
-    ["Teknik dasar menggiring bola disebut ...", ["Passing","Dribbling","Shooting"], 1],
-    ["Lari jarak pendek disebut juga ...", ["Sprint","Marathon","Estafet"], 0],
-    ["Induk organisasi bulu tangkis adalah ...", ["PBSI","PSSI","FIBA"], 0],
-    ["Pernafasan dada termasuk ...", ["Diafragma","Paru-paru","Kulit"], 1],
-    ["Roll depan ada pada ...", ["Senam lantai","Renang","Sepak bola"], 0],
-    ["Unsur kebugaran untuk kekuatan adalah ...", ["Balance","Flexibility","Strength"], 2],
-    ["Gerak manipulatif adalah ...", ["Melempar bola","Melompat","Berjalan"], 0],
-    ["Start jongkok untuk lari ...", ["100 meter","5000 meter","1500 meter"], 0],
-    ["Pendinginan bertujuan ...", ["Meningkatkan detak jantung","Mengembalikan kondisi tubuh","Memperberat otot"], 1],
-    ["Pemain sepak bola tiap tim berjumlah ...", ["11 orang","7 orang","9 orang"], 0],
-    ["Renang gaya dada dikenal sebagai gaya ...", ["Katak","Bebas","Kupu-kupu"], 0],
-    ["Roll belakang bagian pertama menyentuh matras ...", ["Kepala","Tangan","Punggung"], 2],
-    ["Push-up melatih kekuatan ...", ["Otot lengan","Otot perut","Otot betis"], 0],
-    ["Passing bawah terdapat pada ...", ["Bola voli","Basket","Sepak bola"], 0],
-    ["Lay-up ada di olahraga ...", ["Voli","Basket","Atletik"], 1],
-    ["Napas renang gaya bebas melalui ...", ["Mulut","Hidung","Telinga"], 0],
-    ["Melompat ke depan disebut ...", ["High jump","Long jump","Side jump"], 1]
+    ["Apa arti dari 'kebugaran jasmani'?", ["Kemampuan tubuh untuk melakukan aktivitas sehari‑hari tanpa cepat lelah","Kemampuan tubuh untuk melakukan satu jenis olahraga saja","Kemampuan tubuh tidur dengan nyenyak"], 0],
+    ["Manakah yang termasuk komponen kebugaran jasmani?", ["Kekuatan otot","Mengetik cepat","Mewarnai"], 0],
+    ["Salah satu tujuan pemanasan sebelum olahraga adalah ...", ["Menambah berat badan","Mengurangi risiko cedera","Membuat cepat mengantuk"], 1],
+    ["Manfaat pendinginan setelah olahraga adalah ...", ["Meningkatkan detak jantung drastis","Mengembalikan kondisi tubuh","Membuat otot kaku"], 1],
+    ["Detak jantung maksimal kira‑kira dihitung dengan rumus: 220 dikurangi ...", ["Jumlah anggota keluarga","Usia seseorang","Jam tidur"], 1],
+    ["Contoh olahraga permainan dari bola besar adalah ...", ["Bulu tangkis","Sepak bola","Renang"], 1],
+    ["Pada permainan bola voli, servis dilakukan dari ...", ["Belakang lapangan","Luar lapangan","Area depan lawan"], 0],
+    ["Teknik dasar menggiring bola dalam permainan bola disebut ...", ["Passing","Dribbling","Shooting"], 1],
+    ["Dalam permainan basket, lemparan ke ring dari dekat disebut ...", ["Serve","Lay-up","Smash"], 1],
+    ["Jenis olahraga atletik termasuk ...", ["Senam lantai","Lari","Bulu tangkis"], 1],
+    ["Start jongkok biasa digunakan pada nomor lari ...", ["100 meter","5 km jalan santai","Lompat jauh"], 0],
+    ["Lompat jauh adalah jenis nomor ...", ["Lempar","Lompat","Lari"], 1],
+    ["Renang gaya bebas salah satu tekniknya adalah ...", ["Gaya katak","Gaya gaya bebas (freestyle)","Gaya kupu-kupu"], 1],
+    ["Salah satu unsur latihan kebugaran jasmani adalah latihan ...", ["Mental","Fisikk (kekuatan & daya tahan)","Tari"], 1],
+    ["Gerak manipulatif dalam olahraga contohnya ...", ["Melompat tinggi","Melempar bola","Berlari di tempat"], 1],
+    ["Sebelum olahraga berat sebaiknya dilakukan ...", ["Melewatkan makan","Pemanasan","Tidur siang"], 1],
+    ["Pernafasan yang baik saat olahraga adalah melalui ...", ["Telinga","Hidung & mulut","Mata"], 1],
+    ["Contoh olahraga kekuatan dan daya tahan adalah ...", ["Angkat besi","Menonton film","Bermain video game"], 0],
+    ["Dalam tim sepak bola, tujuan dari passing adalah ...", ["Merapikan rumput","Memindahkan bola ke teman","Mengkalkulasi skor"], 1],
+    ["Sikap tubuh saat menerima bola dalam voli disebut ...", ["Standing pass","Serve","Block"], 0]
 ];
 
 let nomor = 0;
@@ -129,7 +131,6 @@ let hitung;
 
 // ==========================
 // TAMPILKAN SOAL
-// ==========================
 function tampilSoal(){
     const data = soalList[nomor];
     document.getElementById("soalContainer").innerHTML = `
@@ -142,65 +143,4 @@ function tampilSoal(){
     `;
 }
 
-// ==========================
-// TIMER 15 DETIK
-// ==========================
-function startTimer(){
-    timer = 15;
-    document.getElementById("timer").innerHTML = "Waktu: " + timer;
-
-    clearInterval(hitung);
-
-    hitung = setInterval(() => {
-        timer--;
-        document.getElementById("timer").innerHTML = "Waktu: " + timer;
-
-        if(timer <= 0){
-            clearInterval(hitung);
-            nextSoal();
-        }
-    }, 1000);
-}
-
-// ==========================
-// PINDAH SOAL
-// ==========================
-function nextSoal(){
-    // cek jawaban
-    const pilih = document.querySelector('input[name="pilihan"]:checked');
-    if(pilih && parseInt(pilih.value) === soalList[nomor][2]){
-        skor++;
-    }
-
-    nomor++;
-
-    if(nomor >= soalList.length){
-        selesaiQuiz();
-        return;
-    }
-
-    tampilSoal();
-    startTimer();
-}
-
-// ==========================
-// SELESAI QUIZ
-// ==========================
-function selesaiQuiz(){
-    clearInterval(hitung);
-    document.getElementById("soalContainer").style.display = "none";
-    document.getElementById("nextBtn").style.display = "none";
-    document.getElementById("timer").style.display = "none";
-
-    const hasil = document.getElementById("hasil");
-    hasil.style.display = "block";
-    hasil.innerHTML = `Skor Anda: ${skor} / ${soalList.length}`;
-}
-
-// MULAI QUIZ
-tampilSoal();
-startTimer();
-</script>
-
-</body>
-</html>
+//
