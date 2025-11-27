@@ -3,85 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz PJOK Kelas 10</title>
+<title>Quiz PJOK Timer 15 Detik</title>
 
-<!-- Font modern -->
+<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-    *{
-        box-sizing:border-box;
-    }
-
     body{
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(135deg, #5d87ff, #8aa8ff);
-        margin:0;
+        font-family:"Poppins",sans-serif;
+        background:linear-gradient(135deg,#5d87ff,#8aa8ff);
         padding:25px;
-        color:#333;
+        margin:0;
     }
 
     .quiz-box{
+        max-width:850px;
+        margin:auto;
         background:white;
         padding:30px;
         border-radius:18px;
-        max-width:900px;
-        margin:auto;
         box-shadow:0 8px 25px rgba(0,0,0,0.25);
-        animation: fadeIn 0.6s ease;
+        animation:fade .4s ease;
     }
 
-    @keyframes fadeIn{
+    @keyframes fade{
         from{opacity:0; transform:translateY(10px);}
         to{opacity:1; transform:translateY(0);}
     }
 
     h2{
         text-align:center;
-        color:#2c3e50;
-        margin-bottom:25px;
-        font-weight:600;
+        margin-bottom:5px;
     }
 
-    .soal{
-        background:#f3f6ff;
+    #timer{
+        text-align:center;
+        font-size:26px;
+        font-weight:600;
+        color:#d62828;
+        margin-bottom:20px;
+    }
+
+    .soal-box{
         padding:18px;
         border-radius:14px;
-        margin-bottom:20px;
+        background:#f3f6ff;
         border-left:6px solid #5d87ff;
-        transition:0.3s;
-    }
-
-    .soal:hover{
-        background:#e8edff;
-        transform:scale(1.02);
-    }
-
-    /* indikator benar */
-    .correct{
-        background:#e5ffe8 !important;
-        border-left:6px solid #28a745 !important;
-    }
-
-    /* indikator salah */
-    .wrong{
-        background:#ffe5e5 !important;
-        border-left:6px solid #d62828 !important;
+        font-size:18px;
+        margin-bottom:20px;
     }
 
     button{
-        padding:14px 35px;
-        background:#2c3e50;
-        color:white;
+        padding:12px 25px;
         border:none;
         border-radius:10px;
         cursor:pointer;
         font-size:18px;
         font-weight:600;
-        display:block;
-        margin:auto;
-        margin-top:25px;
-        transition:0.3s;
+        background:#2c3e50;
+        color:white;
+        transition:.25s;
     }
 
     button:hover{
@@ -92,238 +73,133 @@
     #hasil{
         margin-top:30px;
         font-size:26px;
-        text-align:center;
         font-weight:600;
-        color:#fff;
         background:#2c3e50;
+        color:white;
         padding:15px;
         border-radius:12px;
-        max-width:350px;
-        margin-left:auto;
-        margin-right:auto;
+        text-align:center;
         display:none;
-        animation:pop 0.4s ease;
     }
-
-    @keyframes pop{
-        0%{transform:scale(0.7); opacity:0;}
-        100%{transform:scale(1); opacity:1;}
-    }
-
-    .kunci{
-        color:#b71c1c;
-        font-size:1px;
-        font-weight:bold;
-        margin-top:5px;
-    }
-
 </style>
 </head>
 <body>
 
 <div class="quiz-box">
-<h2>Quiz PJOK Kelas 10 – 20 Soal</h2>
+    <h2>Quiz PJOK Kelas 10</h2>
+    <div id="timer">Waktu: 15</div>
 
-<form id="quizForm">
+    <div id="soalContainer"></div>
 
-<!-- 20 soal -->
-<div class="soal">
-1. Aktivitas yang termasuk olahraga permainan adalah ...
-<br><input type="radio" name="s1" value="b"> Bola voli
-<br><input type="radio" name="s1" value="a"> Senam lantai
-<br><input type="radio" name="s1" value="c"> Lari jarak pendek
-</div>
+    <button id="nextBtn" onclick="nextSoal()">Berikutnya</button>
 
-<div class="soal">
-2. Servis atas terdapat pada permainan ...
-<br><input type="radio" name="s2" value="c"> Sepak bola
-<br><input type="radio" name="s2" value="b"> Bola voli
-<br><input type="radio" name="s2" value="a"> Bulu tangkis
-</div>
-
-<div class="soal">
-3. Tujuan pemanasan sebelum olahraga adalah ...
-<br><input type="radio" name="s3" value="b"> Mengurangi risiko cedera
-<br><input type="radio" name="s3" value="a"> Menghemat energi
-<br><input type="radio" name="s3" value="c"> Membuat tubuh cepat lelah
-</div>
-
-<div class="soal">
-4. Teknik dasar menggiring bola disebut ...
-<br><input type="radio" name="s4" value="b"> Dribbling
-<br><input type="radio" name="s4" value="a"> Passing
-<br><input type="radio" name="s4" value="c"> Shooting
-</div>
-
-<div class="soal">
-5. Lari jarak pendek disebut juga lari ...
-<br><input type="radio" name="s5" value="a"> Sprint
-<br><input type="radio" name="s5" value="b"> Marathon
-<br><input type="radio" name="s5" value="c"> Estafet
-</div>
-
-<div class="soal">
-6. Induk organisasi bulu tangkis Indonesia adalah ...
-<br><input type="radio" name="s6" value="a"> PBSI
-<br><input type="radio" name="s6" value="b"> PSSI
-<br><input type="radio" name="s6" value="c"> FIBA
-</div>
-
-<div class="soal">
-7. Pernafasan dada termasuk jenis pernapasan ...
-<br><input type="radio" name="s7" value="b"> Pernafasan paru-paru
-<br><input type="radio" name="s7" value="a"> Pernafasan diafragma
-<br><input type="radio" name="s7" value="c"> Pernafasan kulit
-</div>
-
-<div class="soal">
-8. Gerakan roll depan terdapat pada ...
-<br><input type="radio" name="s8" value="a"> Senam lantai
-<br><input type="radio" name="s8" value="b"> Renang
-<br><input type="radio" name="s8" value="c"> Sepak bola
-</div>
-
-<div class="soal">
-9. Unsur kebugaran jasmani yang berhubungan dengan kekuatan adalah ...
-<br><input type="radio" name="s9" value="c"> Strength
-<br><input type="radio" name="s9" value="a"> Balance
-<br><input type="radio" name="s9" value="b"> Flexibility
-</div>
-
-<div class="soal">
-10. Gerak manipulatif dalam aktivitas olahraga adalah ...
-<br><input type="radio" name="s10" value="a"> Melempar bola
-<br><input type="radio" name="s10" value="b"> Melompat
-<br><input type="radio" name="s10" value="c"> Berjalan
-</div>
-
-<div class="soal">
-11. Start jongkok digunakan dalam nomor lari ...
-<br><input type="radio" name="s11" value="a"> 100 meter
-<br><input type="radio" name="s11" value="c"> 1500 meter
-<br><input type="radio" name="s11" value="b"> 5000 meter
-</div>
-
-<div class="soal">
-12. Tujuan pendinginan setelah olahraga adalah ...
-<br><input type="radio" name="s12" value="b"> Mengembalikan kondisi tubuh
-<br><input type="radio" name="s12" value="a"> Meningkatkan detak jantung
-<br><input type="radio" name="s12" value="c"> Memperberat otot
-</div>
-
-<div class="soal">
-13. Dalam sepak bola, jumlah pemain dalam satu tim adalah ...
-<br><input type="radio" name="s13" value="a"> 11 orang
-<br><input type="radio" name="s13" value="b"> 7 orang
-<br><input type="radio" name="s13" value="c"> 9 orang
-</div>
-
-<div class="soal">
-14. Renang gaya dada sering disebut gaya ...
-<br><input type="radio" name="s14" value="a"> Katak
-<br><input type="radio" name="s14" value="b"> Bebas
-<br><input type="radio" name="s14" value="c"> Kupu-kupu
-</div>
-
-<div class="soal">
-15. Bagian tubuh yang pertama menyentuh matras saat roll belakang adalah ...
-<br><input type="radio" name="s15" value="c"> Punggung
-<br><input type="radio" name="s15" value="a"> Kepala
-<br><input type="radio" name="s15" value="b"> Tangan
-</div>
-
-<div class="soal">
-16. Push-up bermanfaat untuk melatih kekuatan ...
-<br><input type="radio" name="s16" value="a"> Otot lengan
-<br><input type="radio" name="s16" value="b"> Otot perut
-<br><input type="radio" name="s16" value="c"> Otot betis
-</div>
-
-<div class="soal">
-17. Teknik passing bawah terdapat pada permainan ...
-<br><input type="radio" name="s17" value="a"> Bola voli
-<br><input type="radio" name="s17" value="b"> Basket
-<br><input type="radio" name="s17" value="c"> Sepak bola
-</div>
-
-<div class="soal">
-18. Istilah lay-up dikenal pada olahraga ...
-<br><input type="radio" name="s18" value="b"> Basket
-<br><input type="radio" name="s18" value="a"> Voli
-<br><input type="radio" name="s18" value="c"> Atletik
-</div>
-
-<div class="soal">
-19. Mengambil napas saat berenang gaya bebas dilakukan melalui ...
-<br><input type="radio" name="s19" value="a"> Mulut
-<br><input type="radio" name="s19" value="b"> Hidung
-<br><input type="radio" name="s19" value="c"> Telinga
-</div>
-
-<div class="soal">
-20. Gerakan melompat ke depan disebut ...
-<br><input type="radio" name="s20" value="b"> Long jump
-<br><input type="radio" name="s20" value="a"> High jump
-<br><input type="radio" name="s20" value="c"> Side jump
-</div>
-
-<button type="button" onclick="cekHasil()">Selesai</button>
-
-</form>
-
-<div id="hasil"></div>
+    <div id="hasil"></div>
 </div>
 
 <script>
-function cekHasil(){
-    const kunci = {
-        s1:"b", s2:"b", s3:"b", s4:"b", s5:"a",
-        s6:"a", s7:"b", s8:"a", s9:"c", s10:"a",
-        s11:"a", s12:"b", s13:"a", s14:"a", s15:"c",
-        s16:"a", s17:"a", s18:"b", s19:"a", s20:"b"
-    };
+// ==========================
+// DATA SOAL
+// ==========================
+const soalList = [
+    ["Aktivitas yang termasuk olahraga permainan adalah ...", ["Bola voli","Senam lantai","Lari jarak pendek"], 0],
+    ["Servis atas terdapat pada permainan ...", ["Sepak bola","Bola voli","Bulu tangkis"], 1],
+    ["Tujuan pemanasan sebelum olahraga adalah ...", ["Mengurangi risiko cedera","Menghemat energi","Membuat tubuh cepat lelah"], 0],
+    ["Teknik dasar menggiring bola disebut ...", ["Passing","Dribbling","Shooting"], 1],
+    ["Lari jarak pendek disebut juga ...", ["Sprint","Marathon","Estafet"], 0],
+    ["Induk organisasi bulu tangkis adalah ...", ["PBSI","PSSI","FIBA"], 0],
+    ["Pernafasan dada termasuk ...", ["Diafragma","Paru-paru","Kulit"], 1],
+    ["Roll depan ada pada ...", ["Senam lantai","Renang","Sepak bola"], 0],
+    ["Unsur kebugaran untuk kekuatan adalah ...", ["Balance","Flexibility","Strength"], 2],
+    ["Gerak manipulatif adalah ...", ["Melempar bola","Melompat","Berjalan"], 0],
+    ["Start jongkok untuk lari ...", ["100 meter","5000 meter","1500 meter"], 0],
+    ["Pendinginan bertujuan ...", ["Meningkatkan detak jantung","Mengembalikan kondisi tubuh","Memperberat otot"], 1],
+    ["Pemain sepak bola tiap tim berjumlah ...", ["11 orang","7 orang","9 orang"], 0],
+    ["Renang gaya dada dikenal sebagai gaya ...", ["Katak","Bebas","Kupu-kupu"], 0],
+    ["Roll belakang bagian pertama menyentuh matras ...", ["Kepala","Tangan","Punggung"], 2],
+    ["Push-up melatih kekuatan ...", ["Otot lengan","Otot perut","Otot betis"], 0],
+    ["Passing bawah terdapat pada ...", ["Bola voli","Basket","Sepak bola"], 0],
+    ["Lay-up ada di olahraga ...", ["Voli","Basket","Atletik"], 1],
+    ["Napas renang gaya bebas melalui ...", ["Mulut","Hidung","Telinga"], 0],
+    ["Melompat ke depan disebut ...", ["High jump","Long jump","Side jump"], 1]
+];
 
-    let benar = 0;
-    const soalElements = document.querySelectorAll(".soal");
-    let index = 0;
+let nomor = 0;
+let skor = 0;
+let timer = 15;
+let hitung;
 
-    for(let k in kunci){
-        let box = soalElements[index];
+// ==========================
+// TAMPILKAN SOAL
+// ==========================
+function tampilSoal(){
+    const data = soalList[nomor];
+    document.getElementById("soalContainer").innerHTML = `
+        <div class="soal-box">
+            <b>${nomor+1}. ${data[0]}</b><br><br>
+            <label><input type="radio" name="pilihan" value="0"> ${data[1][0]}</label><br>
+            <label><input type="radio" name="pilihan" value="1"> ${data[1][1]}</label><br>
+            <label><input type="radio" name="pilihan" value="2"> ${data[1][2]}</label>
+        </div>
+    `;
+}
 
-        box.classList.remove("correct","wrong");
+// ==========================
+// TIMER 15 DETIK
+// ==========================
+function startTimer(){
+    timer = 15;
+    document.getElementById("timer").innerHTML = "Waktu: " + timer;
 
-        const pilih = document.querySelector('input[name="'+k+'"]:checked');
+    clearInterval(hitung);
 
-        // hapus kunci sebelumnya
-        let old = box.querySelector(".kunci");
-        if(old) old.remove();
+    hitung = setInterval(() => {
+        timer--;
+        document.getElementById("timer").innerHTML = "Waktu: " + timer;
 
-        if(pilih){
-            if(pilih.value === kunci[k]){
-                benar++;
-                box.classList.add("correct");
-            } else {
-                box.classList.add("wrong");
-                let info = document.createElement("div");
-                info.className = "kunci";
-                info.innerHTML = "Kunci: " + kunci[k];
-                box.appendChild(info);
-            }
-        } else {
-            box.classList.add("wrong");
-            let info = document.createElement("div");
-            info.className = "kunci";
-            info.innerHTML = "Kunci: " + kunci[k];
-            box.appendChild(info);
+        if(timer <= 0){
+            clearInterval(hitung);
+            nextSoal();  // otomatis lanjut
         }
+    }, 1000);
+}
 
-        index++;
+// ==========================
+// PINDAH SOAL
+// ==========================
+function nextSoal(){
+    // cek jawaban
+    const pilih = document.querySelector('input[name="pilihan"]:checked');
+    if(pilih && parseInt(pilih.value) === soalList[nomor][2]){
+        skor++;
     }
+
+    nomor++;
+
+    if(nomor >= soalList.length){
+        selesaiQuiz();
+        return;
+    }
+
+    tampilSoal();
+    startTimer();
+}
+
+// ==========================
+// SELESAI QUIZ
+// ==========================
+function selesaiQuiz(){
+    clearInterval(hitung);
+    document.getElementById("soalContainer").style.display = "none";
+    document.getElementById("nextBtn").style.display = "none";
 
     const hasil = document.getElementById("hasil");
     hasil.style.display = "block";
-    hasil.innerHTML = "Skor Anda: " + benar + " / 20";
+    hasil.innerHTML = `Skor Anda: ${skor} / ${soalList.length}`;
 }
+
+// mulai quiz
+tampilSoal();
+startTimer();
 </script>
 
 </body>
