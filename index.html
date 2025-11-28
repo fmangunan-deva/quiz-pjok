@@ -1,104 +1,152 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tebak Angka Random</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mini Subway Surfers</title>
 
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background: #1a1a1a;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
         margin: 0;
-    }
-
-    h1 {
-        margin-bottom: 10px;
-    }
-
-    .box {
+        overflow: hidden;
         background: #222;
-        padding: 20px;
+        font-family: Arial;
+    }
+
+    #game {
+        width: 100%;
+        height: 100vh;
+        background: linear-gradient(#4a90e2, #1b2735);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .player {
+        width: 50px;
+        height: 50px;
+        background: yellow;
         border-radius: 10px;
-        text-align: center;
-        width: 300px;
+        position: absolute;
+        bottom: 20px;
+        left: 60px;
     }
 
-    input {
-        padding: 10px;
-        width: 80px;
-        text-align: center;
-        border-radius: 5px;
-        border: none;
-        margin-top: 10px;
+    .obstacle {
+        width: 40px;
+        height: 60px;
+        background: red;
+        position: absolute;
+        bottom: 20px;
     }
 
-    button {
-        margin-top: 15px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        background: #00c853;
+    .road {
+        width: 100%;
+        height: 150px;
+        background: #333;
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #score {
+        position: absolute;
+        top: 20px;
+        left: 20px;
         color: white;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    button:hover {
-        background: #009624;
-    }
-
-    .result {
-        margin-top: 15px;
-        font-size: 18px;
+        font-size: 24px;
         font-weight: bold;
     }
 </style>
 </head>
 
 <body>
-
-<div class="box">
-    <h1>Tebak Angka</h1>
-    <p>Tebak angka random antara <b>1 - 10</b></p>
-
-    <input type="number" id="guess" min="1" max="10" placeholder="?" />
-    <button onclick="check()">Cek Jawaban</button>
-
-    <div class="result" id="result"></div>
+<div id="game">
+    <div id="score">Score: 0</div>
+    <div class="player" id="player"></div>
+    <div class="road"></div>
 </div>
 
 <script>
-    // Generate angka random 1–10
-    let randomNumber = Math.floor(Math.random() * 10) + 1;
+    const game = document.getElementById("game");
+    const player = document.getElementById("player");
+    const scoreText = document.getElementById("score");
 
-    function check() {
-        const guess = Number(document.getElementById("guess").value);
-        const result = document.getElementById("result");
+    let isJumping = false;
+    let jumpHeight = 0;
+    let score = 0;
 
-        if (!guess) {
-            result.textContent = "Masukkan angka dulu!";
-            result.style.color = "yellow";
-            return;
-        }
+    // Player jump
+    document.addEventListener("keydown", (e) => {
+        if (e.code === "Space" || e.code === "ArrowUp") jump();
+    });
 
-        if (guess === randomNumber) {
-            result.textContent = "Benar! Kamu menang 🎉";
-            result.style.color = "#00e676";
-            // Generate angka baru untuk permainan berikutnya
-            randomNumber = Math.floor(Math.random() * 10) + 1;
-        } else {
-            result.textContent = "Salah! Coba lagi 😅";
-            result.style.color = "#ff5252";
-        }
+    function jump() {
+        if (isJumping) return;
+        isJumping = true;
+
+        let up = setInterval(() => {
+            if (jumpHeight >= 140) {
+                clearInterval(up);
+
+                let down = setInterval(() => {
+                    if (jumpHeight <= 0) {
+                        clearInterval(down);
+                        isJumping = false;
+                    }
+                    jumpHeight -= 5;
+                    player.style.bottom = (20 + jumpHeight) + "px";
+                }, 15);
+            } else {
+                jumpHeight += 5;
+                player.style.bottom = (20 + jumpHeight) + "px";
+            }
+        }, 15);
     }
-</script>
 
+    // Spawn obstacle
+    function createObstacle() {
+        const obs = document.createElement("div");
+        obs.classList.add("obstacle");
+        obs.style.left = "100%";
+
+        game.appendChild(obs);
+
+        let speed = 5 + score * 0.01;
+
+        let move = setInterval(() => {
+            let obsLeft = parseInt(obs.style.left);
+            obs.style.left = (obsLeft - speed) + "px";
+
+            // Collision detection
+            let playerRect = player.getBoundingClientRect();
+            let obsRect = obs.getBoundingClientRect();
+
+            if (
+                playerRect.left < obsRect.right &&
+                playerRect.right > obsRect.left &&
+                playerRect.bottom > obsRect.top &&
+                playerRect.top < obsRect.bottom
+            ) {
+                alert("Game Over!\nScore kamu: " + score);
+                location.reload();
+            }
+
+            // Remove obstacle when off screen
+            if (obsLeft < -60) {
+                obs.remove();
+                clearInterval(move);
+            }
+        }, 20);
+    }
+
+    // Spawn obstacles continuously
+    setInterval(() => {
+        createObstacle();
+        score++;
+        scoreText.textContent = "Score: " + score;
+    }, 1200);
+</script>
 </body>
 </html>
