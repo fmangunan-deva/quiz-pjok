@@ -1,152 +1,266 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mini Subway Surfers</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Hindari Kotak Merah!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #222;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* Mencegah scroll */
+        }
 
-<style>
-    body {
-        margin: 0;
-        overflow: hidden;
-        background: #222;
-        font-family: Arial;
-    }
+        #game-container {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            background-color: #333;
+            border: 4px solid #fff;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
 
-    #game {
-        width: 100%;
-        height: 100vh;
-        background: linear-gradient(#4a90e2, #1b2735);
-        position: relative;
-        overflow: hidden;
-    }
+        /* Pemain (Kotak Biru) */
+        #player {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #00a8ff;
+            bottom: 20px;
+            left: 180px; /* Tengah (400/2 - 40/2) */
+            border-radius: 5px;
+            box-shadow: 0 0 10px #00a8ff;
+            transition: left 0.1s ease-out; /* Gerakan lebih halus */
+        }
 
-    .player {
-        width: 50px;
-        height: 50px;
-        background: yellow;
-        border-radius: 10px;
-        position: absolute;
-        bottom: 20px;
-        left: 60px;
-    }
+        /* Rintangan (Kotak Merah) */
+        .obstacle {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #e84118;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #e84118;
+        }
 
-    .obstacle {
-        width: 40px;
-        height: 60px;
-        background: red;
-        position: absolute;
-        bottom: 20px;
-    }
+        /* Tampilan Skor */
+        #score-board {
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-    .road {
-        width: 100%;
-        height: 150px;
-        background: #333;
-        position: absolute;
-        bottom: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+        /* Layar Game Over */
+        #game-over {
+            display: none; /* Sembunyikan saat main */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            text-align: center;
+        }
 
-    #score {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-    }
-</style>
+        #game-over h1 {
+            color: #e84118;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4cd137;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #44bd32;
+        }
+
+        .controls-hint {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
 </head>
-
 <body>
-<div id="game">
-    <div id="score">Score: 0</div>
-    <div class="player" id="player"></div>
-    <div class="road"></div>
-</div>
 
-<script>
-    const game = document.getElementById("game");
-    const player = document.getElementById("player");
-    const scoreText = document.getElementById("score");
+    <div id="score-board">Skor: <span id="score">0</span></div>
 
-    let isJumping = false;
-    let jumpHeight = 0;
-    let score = 0;
+    <div id="game-container">
+        <div id="player"></div>
+        
+        <!-- Layar Game Over -->
+        <div id="game-over">
+            <h1>GAME OVER</h1>
+            <p>Skor Akhir Kamu: <span id="final-score">0</span></p>
+            <button onclick="restartGame()">Main Lagi</button>
+        </div>
+    </div>
 
-    // Player jump
-    document.addEventListener("keydown", (e) => {
-        if (e.code === "Space" || e.code === "ArrowUp") jump();
-    });
+    <div class="controls-hint">
+        Gunakan Panah Kiri/Kanan (Desktop) atau Sentuh Kiri/Kanan Layar (HP)
+    </div>
 
-    function jump() {
-        if (isJumping) return;
-        isJumping = true;
+    <script>
+        const player = document.getElementById('player');
+        const gameContainer = document.getElementById('game-container');
+        const scoreDisplay = document.getElementById('score');
+        const gameOverScreen = document.getElementById('game-over');
+        const finalScoreDisplay = document.getElementById('final-score');
 
-        let up = setInterval(() => {
-            if (jumpHeight >= 140) {
-                clearInterval(up);
+        let playerLeft = 180; // Posisi awal pemain
+        let obstacles = [];
+        let gameSpeed = 5;
+        let score = 0;
+        let isGameOver = false;
+        let gameLoopInterval;
+        let obstacleInterval;
 
-                let down = setInterval(() => {
-                    if (jumpHeight <= 0) {
-                        clearInterval(down);
-                        isJumping = false;
-                    }
-                    jumpHeight -= 5;
-                    player.style.bottom = (20 + jumpHeight) + "px";
-                }, 15);
+        // --- KONTROL ---
+
+        // Keyboard (Desktop)
+        document.addEventListener('keydown', (e) => {
+            if (isGameOver) return;
+            if (e.key === 'ArrowLeft') {
+                movePlayer(-20);
+            } else if (e.key === 'ArrowRight') {
+                movePlayer(20);
+            }
+        });
+
+        // Sentuhan (Mobile)
+        gameContainer.addEventListener('touchstart', (e) => {
+            if (isGameOver) return;
+            const touchX = e.touches[0].clientX;
+            const containerRect = gameContainer.getBoundingClientRect();
+            const containerCenter = containerRect.left + (containerRect.width / 2);
+
+            if (touchX < containerCenter) {
+                movePlayer(-40); // Gerak ke kiri
             } else {
-                jumpHeight += 5;
-                player.style.bottom = (20 + jumpHeight) + "px";
+                movePlayer(40); // Gerak ke kanan
             }
-        }, 15);
-    }
+        });
 
-    // Spawn obstacle
-    function createObstacle() {
-        const obs = document.createElement("div");
-        obs.classList.add("obstacle");
-        obs.style.left = "100%";
+        function movePlayer(distance) {
+            playerLeft += distance;
+            // Batasi agar tidak keluar kotak
+            if (playerLeft < 0) playerLeft = 0;
+            if (playerLeft > 360) playerLeft = 360; // 400px lebar container - 40px lebar player
+            player.style.left = playerLeft + 'px';
+        }
 
-        game.appendChild(obs);
+        // --- LOGIKA GAME ---
 
-        let speed = 5 + score * 0.01;
+        function createObstacle() {
+            if (isGameOver) return;
 
-        let move = setInterval(() => {
-            let obsLeft = parseInt(obs.style.left);
-            obs.style.left = (obsLeft - speed) + "px";
+            const obstacle = document.createElement('div');
+            obstacle.classList.add('obstacle');
+            
+            // Posisi horizontal acak (kelipatan 40 agar sejajar grid)
+            const randomLeft = Math.floor(Math.random() * 9) * 40; 
+            obstacle.style.left = randomLeft + 'px';
+            obstacle.style.top = '-40px'; // Mulai dari atas layar
 
-            // Collision detection
-            let playerRect = player.getBoundingClientRect();
-            let obsRect = obs.getBoundingClientRect();
+            gameContainer.appendChild(obstacle);
+            obstacles.push(obstacle);
+        }
 
-            if (
-                playerRect.left < obsRect.right &&
-                playerRect.right > obsRect.left &&
-                playerRect.bottom > obsRect.top &&
-                playerRect.top < obsRect.bottom
-            ) {
-                alert("Game Over!\nScore kamu: " + score);
-                location.reload();
-            }
+        function updateGame() {
+            if (isGameOver) return;
 
-            // Remove obstacle when off screen
-            if (obsLeft < -60) {
-                obs.remove();
-                clearInterval(move);
-            }
-        }, 20);
-    }
+            // Gerakkan rintangan ke bawah
+            obstacles.forEach((obstacle, index) => {
+                let top = parseInt(obstacle.style.top);
+                obstacle.style.top = (top + gameSpeed) + 'px';
 
-    // Spawn obstacles continuously
-    setInterval(() => {
-        createObstacle();
-        score++;
-        scoreText.textContent = "Score: " + score;
-    }, 1200);
-</script>
+                // Cek Tabrakan
+                if (checkCollision(player, obstacle)) {
+                    endGame();
+                }
+
+                // Hapus rintangan jika sudah lewat bawah & tambah skor
+                if (top > 600) {
+                    obstacle.remove();
+                    obstacles.splice(index, 1);
+                    score++;
+                    scoreDisplay.innerText = score;
+
+                    // Tambah kecepatan setiap 10 poin
+                    if (score % 10 === 0) {
+                        gameSpeed += 0.5;
+                    }
+                }
+            });
+        }
+
+        function checkCollision(playerDiv, obstacleDiv) {
+            const pRect = playerDiv.getBoundingClientRect();
+            const oRect = obstacleDiv.getBoundingClientRect();
+
+            return !(
+                pRect.top > oRect.bottom ||
+                pRect.bottom < oRect.top ||
+                pRect.right < oRect.left ||
+                pRect.left > oRect.right
+            );
+        }
+
+        function startGame() {
+            // Reset variabel
+            isGameOver = false;
+            score = 0;
+            gameSpeed = 5;
+            playerLeft = 180;
+            player.style.left = '180px';
+            scoreDisplay.innerText = '0';
+            gameOverScreen.style.display = 'none';
+
+            // Hapus rintangan lama
+            obstacles.forEach(obs => obs.remove());
+            obstacles = [];
+
+            // Jalankan Loop
+            gameLoopInterval = setInterval(updateGame, 20); // Update setiap 20ms
+            obstacleInterval = setInterval(createObstacle, 1000); // Buat rintangan tiap 1 detik
+        }
+
+        function endGame() {
+            isGameOver = true;
+            clearInterval(gameLoopInterval);
+            clearInterval(obstacleInterval);
+            finalScoreDisplay.innerText = score;
+            gameOverScreen.style.display = 'flex';
+        }
+
+        function restartGame() {
+            startGame();
+        }
+
+        // Mulai game pertama kali
+        startGame();
+
+    </script>
 </body>
 </html>
